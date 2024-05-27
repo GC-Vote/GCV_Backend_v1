@@ -6,11 +6,11 @@ const databaseSetup = async (next: () => void) => {
   try {
     // await DBConnect.dbCreate();
     await DBConnect.getConnection();
-    Logger.log(MESSAGES.DATABASE_CONNECTION_SUCCESS);
+    Logger.log(MESSAGES.DATABASE.DATABASE_CONNECTION_SUCCESS);
     next();
   } catch (error) {
     Logger.log(error);
-    Logger.error(MESSAGES.DATABASE_CONNECTION_FAILURE);
+    Logger.error(MESSAGES.DATABASE.DATABASE_CONNECTION_FAILURE);
   }
 };
 
