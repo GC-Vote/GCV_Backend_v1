@@ -21,7 +21,7 @@ const backendSetup = (app: Express) => {
   app.use(cors());
   app.use(bodyParserJSON());
 
-  app.use(requestLoggerMiddleware);
+  // app.use(requestLoggerMiddleware);
 
   app.use(requestIp.mw());
   // For Swagger

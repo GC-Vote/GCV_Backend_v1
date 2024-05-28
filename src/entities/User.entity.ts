@@ -6,21 +6,16 @@ import { CoreEntity } from "./Core.entity";
   name: "users",
 })
 export class UserEntity extends CoreEntity {
-  @Column({ name: "username", nullable: true })
+  @Column({ name: "uuid", nullable: false })
+  uuid: string;
+
+  @Column({ name: "username", nullable: false })
   username: string;
 
   @Column({ name: "email", nullable: false })
   email: string;
 
-  @Column({ name: "avatar", default: "logo.png" })
+  @Column({ name: "avatar", nullable: true})
   avatar: string;
 
-  @Column({ name: "password", nullable: false })
-  password: string;
-
-  @Column({ name: "verifycode", nullable: true })
-  verifyCode: Number;
-
-  @Column({ name: "verifystatus", default: false })
-  verifyStatus: Boolean;
 }

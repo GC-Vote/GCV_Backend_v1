@@ -2,7 +2,7 @@ import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 import { UserEntity } from "@/entities";
 import { DuplicateError, CustomError } from "@/errors";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { body } from "express-validator";
 import httpStatus from "http-status";
 import { userService } from "services";
@@ -12,74 +12,38 @@ import path from "path";
 import { MESSAGES, PATHS } from "consts";
 import { sendVerifyEmail } from "@/utils/email";
 import { randomInt } from "@/utils/generateRandomNumber";
+import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
 
-export const signUpValidator = () => {
-  return [
-    body("username")
-      .notEmpty()
-      .withMessage(MESSAGES.VALIDATION.NAME_IS_REQUIRED),
-    body("email").notEmpty().withMessage(MESSAGES.VALIDATION.EMAIL_IS_REQUIRED),
-    body("email")
-      .optional()
-      .isEmail()
-      .withMessage(MESSAGES.VALIDATION.INVALID_EMAIL),
-    body("password")
-      .isLength({ min: 6, max: 30 })
-      .withMessage(MESSAGES.VALIDATION.PASSWORD_LENGTH),
-  ];
-};
-
-type Params = unknown;
-type ResBody = unknown;
-type ReqBody = {
-  username: string;
-  email: string;
-  avatar?: string;
-  password: string;
-};
-type ReqQuery = unknown;
-
-const signUpHandler = async (
-  req: Request<Params, ResBody, ReqBody, ReqQuery>,
+export const signUpHandler = async (
+  evt: WebhookEvent,
   res: Response
-): Promise<void> => {
-  const { username, email, avatar, password } = req.body;
+) => {
+  try {
+    interface ExpectedEventData {
+      username?: string;
+      email_addresses?: any;
+      image_url?: string;
+    }
 
-  const user: UserEntity = await getUserFromEmail(email);
+    // Then, when destructuring:
+    const { id } = evt.data;
+    const { username, email_addresses, image_url } =
+      evt.data as ExpectedEventData;
 
-  if (user) {
-    throw new DuplicateError(MESSAGES.ERROR.EMAIL_ALREADY_EXISTS);
+    // if (id) {
+    //   throw new DuplicateError(MESSAGES.ERROR.EMAIL_DOES_NOT_EXIST);
+    // }
+
+    const newUser: UserEntity = await userService.createUser({
+      uuid: id,
+      username: username,
+      email: email_addresses[0].email_address,
+      avatar: image_url,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.json({ error: "An unexpected error occurred." });
   }
-
-  // Prevent xss using DOMPurify and santinization
-  const window = new JSDOM("").window;
-  const purify = DOMPurify(window);
-
-  // Hash password
-  const hashPassword: string = await encryptPassword(password);
-
-  // Generate Random Number
-  const randomVerifyNumber = randomInt(100000, 999999);
-
-  const newUser: UserEntity = await userService.createUser({
-    username: purify.sanitize(username),
-    email: email,
-    avatar: avatar
-      ? avatar
-      : `${path.join(
-          __dirname,
-          "../../../",
-          PATHS.FILE_UPLOAD_DEFAULT_FOLDER,
-          "default.png"
-        )}`,
-    password: hashPassword,
-    verifyCode: randomVerifyNumber,
-  });
-
-  // Verify Email
-  sendVerifyEmail(email, randomVerifyNumber);
-
-  res.status(httpStatus.OK).json(newUser);
 };
 
-export const signUp = errorHandlerWrapper(signUpHandler);
+// export const signUp = errorHandlerWrapper(signUpHandler);
