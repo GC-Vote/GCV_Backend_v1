@@ -4,7 +4,7 @@
   "description": "GCV_Backend_By_GL",
   "main": "index.ts",
   "scripts": {
-    "preview": "nodemon dist/index.tx",
+    "preview": "nodemon dist/src/index.js",
     "dev": "nodemon src/index.ts",
     "migrate": "typeorm migration:run",
     "build": "tsc -p tsconfig.json",
@@ -14,6 +14,7 @@
   "author": "My Dev: GOS",
   "license": "ISC",
   "dependencies": {
+    "@clerk/nextjs": "^5.1.3",
     "@jest-mock/express": "^2.0.2",
     "@sendgrid/mail": "^8.1.3",
     "@types/swagger-ui-express": "^4.1.6",
@@ -30,11 +31,14 @@
     "jsdom": "^24.0.0",
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
+    "ngrok": "^5.0.0-beta.2",
     "nodemailer": "^6.9.13",
     "request-ip": "^3.3.0",
+    "svix": "^1.24.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "typeorm": "^0.3.20",
+    "typeorm-extension": "^2.2.12",
     "typeorm-naming-strategies": "^4.1.0",
     "uuid": "^9.0.1"
   },
@@ -59,7 +63,6 @@
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typeorm-extension": "^3.5.1",
     "typescript": "^5.4.5"
   }
 }
