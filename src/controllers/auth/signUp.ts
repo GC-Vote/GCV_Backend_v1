@@ -17,7 +17,7 @@ import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
 export const signUpHandler = async (
   evt: WebhookEvent,
   res: Response
-) => {
+) : Promise<Boolean> => {
   try {
     interface ExpectedEventData {
       username?: string;
@@ -30,19 +30,15 @@ export const signUpHandler = async (
     const { username, email_addresses, image_url } =
       evt.data as ExpectedEventData;
 
-    // if (id) {
-    //   throw new DuplicateError(MESSAGES.ERROR.EMAIL_DOES_NOT_EXIST);
-    // }
-
     const newUser: UserEntity = await userService.createUser({
       uuid: id,
       username: username,
       email: email_addresses[0].email_address,
       avatar: image_url,
     });
+    return true;
   } catch (error) {
-    console.error(error);
-    return res.json({ error: "An unexpected error occurred." });
+    return false;
   }
 };
 
