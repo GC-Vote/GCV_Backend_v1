@@ -3,6 +3,8 @@ import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
 import { errorHandlerWrapper } from "@/utils";
 import "dotenv/config";
 import { signUpHandler } from "../auth";
+import httpStatus from "http-status";
+import { MESSAGES } from "@/consts";
 
 const clerkWebHookHandler = async function (req, res) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -56,17 +58,38 @@ const clerkWebHookHandler = async function (req, res) {
   console.log(`Webhook with an ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", evt.data);
 
+  var success: Boolean = false;
   switch (evt.type) {
-    case "user.created":
-      signUpHandler(evt,res);
-    case "user.updated":
-      signUpHandler(evt,res);
+    case "user.created": {
+      signUpHandler(evt, res)
+        .then((result) => {
+          success = result;
+          if (success) {
+            res.status(httpStatus.OK).json({
+              success: true,
+              message: "Webhook received",
+            });
+          } else {
+            res
+              .status(httpStatus.NOT_ACCEPTABLE)
+              .json(MESSAGES.ERROR.SIGN_UP_NOT_ACCEPTABLE);
+          }
+        })
+        .catch((error) => {
+          res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            message: (error as Error).message,
+          });
+        });
+      return;
+    }
+    default:
+      return res.status(httpStatus.OK).json({
+        success: true,
+        message: "Webhook received",
+      });
+    // case "user.updated":
+    //   signUpHandler(evt,res);
   }
-
-  // return res.status(200).json({
-  //   success: true,
-  //   message: "Webhook received",
-  // });
 };
 
 export const clerkWebHookController = errorHandlerWrapper(clerkWebHookHandler);
