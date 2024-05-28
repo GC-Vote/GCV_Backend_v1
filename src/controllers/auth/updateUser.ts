@@ -4,7 +4,7 @@ import { userService } from "@/services";
 import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
 import { NotFoundError } from "@/errors";
 import { MESSAGES } from "@/consts";
-import { generateEmailString } from "@/utils/generateEmailString";
+import { generateEmailStringArray } from "@/utils";
 
 export const updateHandler = async (
   evt: WebhookEvent,
@@ -21,8 +21,8 @@ export const updateHandler = async (
     const { username, email_addresses, image_url } =
       evt.data as ExpectedEventData;
 
-    const email_string = await generateEmailString(email_addresses);
-    console.log(email_string);
+    const email_string = await generateEmailStringArray(email_addresses);
+
     const user: UserEntity = await userService.getUserFromUUID(id);
     if (!user) {
       throw new NotFoundError(MESSAGES.ERROR.USER_DOES_NOT_EXIST);
@@ -32,7 +32,7 @@ export const updateHandler = async (
       {
         username: username,
         avatar: image_url,
-        email: email_string,
+        email: JSON.stringify(email_string),
       },
       user
     );

@@ -51,3 +51,11 @@ export const updateUser = async (
 
   return updateUser;
 };
+
+export const deleteUserFromId = async (uuid: string): Promise<Boolean> => {
+  const userRepository = await getUserRepository();
+  const userInfo: any = await userRepository.delete({
+    uuid: uuid,
+  });
+  return userInfo && true;
+};

@@ -14,6 +14,8 @@ import appRoutes from "routes";
 
 import path from "path";
 
+import { ClerkExpressWithAuth, ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node'
+
 const port = process.env.PORT || 3001;
 
 const backendSetup = (app: Express) => {
@@ -29,6 +31,12 @@ const backendSetup = (app: Express) => {
   // Health check
   app.use("/health", function (req, res) {
     res.send("OK");
+  });
+
+  app.get("/protected-endpoint", ClerkExpressWithAuth(), (req, res) => {
+    const {auth} = req as any;
+    console.log(auth)
+    res.json(auth);
   });
 
   app.use(`/api/${ROUTE_VERSION}`, appRoutes);
