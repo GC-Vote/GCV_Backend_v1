@@ -29,17 +29,24 @@ export const getUserFromEmail = async (
   return userInfo;
 };
 
+export const getUserFromUUID = async (
+  uuid: string
+): Promise<UserEntity | null> => {
+  const userRepository = await getUserRepository();
+  const userInfo: UserEntity | null = await userRepository.findOneBy({
+    uuid: uuid,
+  });
+  return userInfo;
+};
+
 export const updateUser = async (
-  data: Pick<
-    UserEntity,
-    "uuid" | "username" | "avatar"
-  >,
+  data: Pick<UserEntity, "username" | "avatar" | "email">,
   updateUser: UserEntity
 ): Promise<UserEntity | null> => {
   const userRepository = await getUserRepository();
-  updateUser.uuid = data.uuid ? data.uuid : updateUser.uuid;
   updateUser.username = data.username ? data.username : updateUser.username;
   updateUser.avatar = data.avatar ? data.avatar : updateUser.avatar;
+  updateUser.email = data.email ? data.email : updateUser.email;
   await userRepository.save(updateUser);
 
   return updateUser;

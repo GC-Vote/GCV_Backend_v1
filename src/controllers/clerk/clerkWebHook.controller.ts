@@ -2,7 +2,7 @@ import { Webhook } from "svix";
 import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
 import { errorHandlerWrapper } from "@/utils";
 import "dotenv/config";
-import { signUpHandler } from "../auth";
+import { signUpHandler, updateHandler } from "../auth";
 import httpStatus from "http-status";
 import { MESSAGES } from "@/consts";
 
@@ -12,7 +12,6 @@ const clerkWebHookHandler = async function (req, res) {
   if (!WEBHOOK_SECRET) {
     throw new Error("You need a WEBHOOK_SECRET in your .env");
   }
-
   // Get the headers and body
   const headers = req.headers;
   const payload: string | Buffer = JSON.stringify(req.body);
@@ -82,6 +81,29 @@ const clerkWebHookHandler = async function (req, res) {
         });
       return;
     }
+    case "user.updated": {
+      updateHandler(evt, res)
+        .then((result) => {
+          success = result;
+          if (success) {
+            res.status(httpStatus.OK).json({
+              success: true,
+              message: "Webhook received",
+            });
+          } else {
+            res
+              .status(httpStatus.NOT_ACCEPTABLE)
+              .json(MESSAGES.ERROR.UPDATE_NOT_ACCEPTABLE);
+          }
+        })
+        .catch((error) => {
+          res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            message: (error as Error).message,
+          });
+        });
+      return;
+    }
+
     default:
       return res.status(httpStatus.OK).json({
         success: true,
