@@ -1,4 +1,5 @@
 export * from "./signUp";
+export * from "./update";
 // export * from "./signIn";
 // export * from "./signUp.verify";
 // export * from "./resetRequest.controller";

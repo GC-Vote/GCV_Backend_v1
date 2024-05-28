@@ -29,31 +29,31 @@ type ReqBody = {
 };
 type ReqQuery = unknown;
 
-const signUpVerifyHandler = async (
-  req: Request<Params, ResBody, ReqBody, ReqQuery>,
-  res: Response
-): Promise<void> => {
-  const { username, email, avatar, password, verifyCode } = req.body;
-  const user: UserEntity = await getUserFromEmail(email);
-  if (user.verifyCode != verifyCode) {
-    throw new DuplicateError(MESSAGES.ERROR.VERIFYCODE_INCORRECT);
-  } else {
-    const updateUser: UserEntity = await userService.updateUser(
-      {
-        username: username,
-        avatar: avatar,
-        password: password,
-        verifyStatus: true,
-      },
-      user
-    );
+// const signUpVerifyHandler = async (
+//   req: Request<Params, ResBody, ReqBody, ReqQuery>,
+//   res: Response
+// ): Promise<void> => {
+//   const { username, email, avatar, password, verifyCode } = req.body;
+//   const user: UserEntity = await getUserFromEmail(email);
+//   if (user.verifyCode != verifyCode) {
+//     throw new DuplicateError(MESSAGES.ERROR.VERIFYCODE_INCORRECT);
+//   } else {
+//     const updateUser: UserEntity = await userService.updateUser(
+//       {
+//         username: username,
+//         avatar: avatar,
+//         password: password,
+//         verifyStatus: true,
+//       },
+//       user
+//     );
 
-    const token: string = jwt.sign({ email }, process.env.JWT_TOKEN, {
-      expiresIn: process.env.JWT_EXPIRATION_TIME,
-    });
+//     const token: string = jwt.sign({ email }, process.env.JWT_TOKEN, {
+//       expiresIn: process.env.JWT_EXPIRATION_TIME,
+//     });
 
-    res.status(httpStatus.OK).json({ updateUser: updateUser, token: token });
-  }
-};
+//     res.status(httpStatus.OK).json({ updateUser: updateUser, token: token });
+//   }
+// };
 
-export const signUpVerify = errorHandlerWrapper(signUpVerifyHandler);
+// export const signUpVerify = errorHandlerWrapper(signUpVerifyHandler);
