@@ -5,6 +5,7 @@ import "dotenv/config";
 import { signUpHandler, updateHandler } from "../auth";
 import httpStatus from "http-status";
 import { MESSAGES } from "@/consts";
+import { deleteUserHandler } from "../auth/deleteUser";
 
 const clerkWebHookHandler = async function (req, res) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -104,13 +105,33 @@ const clerkWebHookHandler = async function (req, res) {
       return;
     }
 
+    case "user.deleted": {
+      deleteUserHandler(evt, res)
+        .then((result) => {
+          success = result;
+          if (success) {
+            res.status(httpStatus.OK).json({
+              success: true,
+              message: "Webhook received",
+            });
+          } else {
+            res
+              .status(httpStatus.NOT_ACCEPTABLE)
+              .json(MESSAGES.ERROR.SIGN_UP_NOT_ACCEPTABLE);
+          }
+        })
+        .catch((error) => {
+          res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            message: (error as Error).message,
+          });
+        });
+      return;
+    }
     default:
       return res.status(httpStatus.OK).json({
         success: true,
         message: "Webhook received",
       });
-    // case "user.updated":
-    //   signUpHandler(evt,res);
   }
 };
 
