@@ -4,6 +4,7 @@ import { ValidationError, validationResult } from "express-validator";
 import { ArgumentValidationError } from "@/errors";
 
 import { AuthRequest } from "@/types";
+import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
 
 export const errorHandlerWrapper = (
   func: (

@@ -2,6 +2,7 @@ import { Webhook } from "svix";
 import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
 import { errorHandlerWrapper } from "@/utils";
 import "dotenv/config";
+import { signUpHandler } from "../auth";
 
 const clerkWebHookHandler = async function (req, res) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -19,13 +20,12 @@ const clerkWebHookHandler = async function (req, res) {
   const svix_timestamp = headers["svix-timestamp"] as string;
   const svix_signature = headers["svix-signature"] as string;
 
-  
   // If there are no Svix headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
     return new Response("Error occured -- no svix headers", {
-        status: 400,
+      status: 400,
     });
-}
+  }
 
   // Create a new Svix instance with your secret.
   const wh = new Webhook(WEBHOOK_SECRET);
@@ -56,10 +56,17 @@ const clerkWebHookHandler = async function (req, res) {
   console.log(`Webhook with an ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", evt.data);
 
-  return res.status(200).json({
-    success: true,
-    message: "Webhook received",
-  });
+  switch (evt.type) {
+    case "user.created":
+      signUpHandler(evt,res);
+    case "user.updated":
+      signUpHandler(evt,res);
+  }
+
+  // return res.status(200).json({
+  //   success: true,
+  //   message: "Webhook received",
+  // });
 };
 
 export const clerkWebHookController = errorHandlerWrapper(clerkWebHookHandler);
