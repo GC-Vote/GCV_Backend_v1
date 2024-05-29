@@ -14,7 +14,10 @@ import appRoutes from "routes";
 
 import path from "path";
 
-import { ClerkExpressWithAuth, ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node'
+import {
+  ClerkExpressWithAuth,
+  ClerkExpressRequireAuth,
+} from "@clerk/clerk-sdk-node";
 
 const port = process.env.PORT || 3001;
 
@@ -23,7 +26,7 @@ const backendSetup = (app: Express) => {
   app.use(cors());
   app.use(bodyParserJSON());
 
-  // app.use(requestLoggerMiddleware);
+  app.use(requestLoggerMiddleware);
 
   app.use(requestIp.mw());
   // For Swagger
@@ -34,8 +37,7 @@ const backendSetup = (app: Express) => {
   });
 
   app.get("/protected-endpoint", ClerkExpressWithAuth(), (req, res) => {
-    const {auth} = req as any;
-    console.log(auth)
+    const { auth } = req as any;
     res.json(auth);
   });
 

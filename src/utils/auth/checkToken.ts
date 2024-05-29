@@ -3,9 +3,9 @@ import { NotFoundError } from "errors";
 import { Response } from 'express';
 import httpStatus from "http-status";
 import jwt from 'jsonwebtoken';
-import { JWT_TOKEN } from 'config';
 import { userService } from 'services';
 import { Logger } from "utils/logger";
+import 'dotenv/config'
 
 export const checkToken = async (
     req: any,
@@ -19,7 +19,7 @@ export const checkToken = async (
         if (token === 'Bearer') {
             throw new NotFoundError('Unauthorized', REASON_CODES.AUTH.UNAUTHORIZED);
         }
-        const data: any = jwt.verify(token, JWT_TOKEN);
+        const data: any = jwt.verify(token, process.env.JWT_TOKEN);
 
         const user = await userService.getUserFromEmail(data.email);
 
