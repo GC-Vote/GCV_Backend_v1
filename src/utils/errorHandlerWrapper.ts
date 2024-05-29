@@ -11,9 +11,8 @@ export const errorHandlerWrapper = (
   func: (
     req:
       | Request<unknown, unknown, unknown, unknown>
-      | AuthRequest<unknown, unknown, unknown, unknown>
-      | NextApiRequest,
-    res: Response | NextApiResponse,
+      | AuthRequest<unknown, unknown, unknown, unknown>,
+    res: Response,
     next: NextFunction
   ) => void
 ) => {
