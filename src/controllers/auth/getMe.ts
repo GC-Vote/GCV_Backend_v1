@@ -19,8 +19,8 @@ export const getMeHandler = async (
   req: Request<Params, ResBody, ReqBody, ReqQuery>,
   res: Response
 ) => {
-  const { userId } = req as any;
-  const user: UserEntity = await userService.getUserFromUUID(userId);
+  const { auth } = req as any;
+  const user: UserEntity = await userService.getUserFromUUID(auth.userId);
 
   if (!user) {
     throw new NotFoundError("This User does not exist.");

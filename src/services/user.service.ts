@@ -39,6 +39,16 @@ export const getUserFromUUID = async (
   return userInfo;
 };
 
+export const getUserFromUsername = async (
+  username: string
+): Promise<UserEntity | null> => {
+  const userRepository = await getUserRepository();
+  const userInfo: UserEntity | null = await userRepository.findOneBy({
+    username: username,
+  });
+  return userInfo;
+};
+
 export const updateUser = async (
   data: Pick<UserEntity, "username" | "avatar" | "email">,
   updateUser: UserEntity

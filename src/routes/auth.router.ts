@@ -10,4 +10,10 @@ authRouter.get(
   authController.getMe
 )
 
+authRouter.get(
+  '/:index',
+  ClerkExpressRequireAuth(),
+  authController.getUser
+)
+
 export default authRouter;
