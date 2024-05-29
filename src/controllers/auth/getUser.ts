@@ -22,13 +22,12 @@ export const getUserHandler = async (
   res: Response
 ) => {
   const { auth } = req as any;
-  const user_now: UserEntity = await userService.getUserFromUUID(auth.userId);
+  const user_now: UserEntity = await userService.getUser({ uuid: auth.userId });
   const { index } = req.params;
-  console.log(index);
-  const user_get_uuid: UserEntity = await userService.getUserFromUUID(index);
-  const user_get_username: UserEntity = await userService.getUserFromUsername(
-    index
-  );
+  const user_get_uuid: UserEntity = await userService.getUser({ uuid: index });
+  const user_get_username: UserEntity = await userService.getUser({
+    username: index,
+  });
   const user_get = user_get_uuid ? user_get_uuid : user_get_username;
   if (!user_get) {
     throw new NotFoundError("This Email's User is not exist.");
