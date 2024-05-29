@@ -18,16 +18,16 @@ export const createUser = async (
   return newUser;
 };
 
-export const getUserFromEmail = async (
-  email: string
-): Promise<UserEntity | null> => {
-  const userRepository = await getUserRepository();
-  const userInfo: UserEntity | null = await userRepository.findOneBy({
-    email: email,
-  });
+// export const getUserFromEmail = async (
+//   email: string
+// ): Promise<UserEntity | null> => {
+//   const userRepository = await getUserRepository();
+//   const userInfo: UserEntity | null = await userRepository.findOneBy({
+//     email: email,
+//   });
 
-  return userInfo;
-};
+//   return userInfo;
+// };
 
 export const getUserFromUUID = async (
   uuid: string
@@ -39,13 +39,34 @@ export const getUserFromUUID = async (
   return userInfo;
 };
 
-export const getUserFromUsername = async (
-  username: string
+// export const getUserFromUsername = async (
+//   username: string
+// ): Promise<UserEntity | null> => {
+//   const userRepository = await getUserRepository();
+//   const userInfo: UserEntity | null = await userRepository.findOneBy({
+//     username: username,
+//   });
+//   return userInfo;
+// };
+
+export const getUser = async (
+  data: Partial<Pick<UserEntity, "username" | "uuid">>
 ): Promise<UserEntity | null> => {
   const userRepository = await getUserRepository();
-  const userInfo: UserEntity | null = await userRepository.findOneBy({
-    username: username,
-  });
+  // const userInfo: UserEntity | null = await userRepository.findOneBy({
+  //   username: username,
+  // });
+  const userInfo: UserEntity | null = await userRepository
+    .createQueryBuilder("user")
+    .select([
+      "user.uuid",
+      "user.email",
+      "user.username",
+      "user.avatar",
+    ])
+    // .select()
+    .where(data)
+    .getOne();
   return userInfo;
 };
 
