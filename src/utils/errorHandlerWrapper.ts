@@ -5,13 +5,15 @@ import { ArgumentValidationError } from "@/errors";
 
 import { AuthRequest } from "@/types";
 import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 export const errorHandlerWrapper = (
   func: (
     req:
       | Request<unknown, unknown, unknown, unknown>
-      | AuthRequest<unknown, unknown, unknown, unknown>,
-    res: Response,
+      | AuthRequest<unknown, unknown, unknown, unknown>
+      | NextApiRequest,
+    res: Response | NextApiResponse,
     next: NextFunction
   ) => void
 ) => {

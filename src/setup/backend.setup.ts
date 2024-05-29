@@ -36,10 +36,11 @@ const backendSetup = (app: Express) => {
     res.send("OK");
   });
 
-  app.get("/protected-endpoint", ClerkExpressWithAuth(), (req, res) => {
+  app.get("/protected-endpoint", ClerkExpressRequireAuth(), (req, res) => {
     const { auth } = req as any;
     res.json(auth);
   });
+  // app.get("/protected-endpoint", tokenVerify);
 
   app.use(`/api/${ROUTE_VERSION}`, appRoutes);
   app.use(errorHandlerMiddleware);
