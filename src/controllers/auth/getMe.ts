@@ -5,6 +5,7 @@ import httpStatus from "http-status";
 import { errorHandlerWrapper } from "utils";
 import { AuthRequest } from "types";
 import { userService } from "@/services";
+import { MESSAGES } from "@/consts";
 
 export const getMeValidator = () => {
   return [];
@@ -23,7 +24,7 @@ export const getMeHandler = async (
   const user: UserEntity = await userService.getUser({uuid : auth.userId});
 
   if (!user) {
-    throw new NotFoundError("This User does not exist.");
+    throw new NotFoundError(MESSAGES.ERROR.USER_DOES_NOT_EXIST);
   }
 
   res.status(httpStatus.OK).json({ user: user });
