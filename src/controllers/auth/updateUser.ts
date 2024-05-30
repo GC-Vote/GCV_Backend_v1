@@ -13,15 +13,15 @@ export const updateHandler = async (
   try {
     interface ExpectedEventData {
       username?: string;
-      emailAddresses?: any;
-      imageUrl?: string;
+      email_addresses?: any;
+      image_url?: string;
     }
 
     const { id } = evt.data;
-    const { username, emailAddresses, imageUrl } =
+    const { username, email_addresses, image_url } =
       evt.data as ExpectedEventData;
 
-    const emailString = await generateEmailStringArray(emailAddresses);
+    const emailString = await generateEmailStringArray(email_addresses);
 
     const user: UserEntity = await userService.getUserFromUUID(id);
     if (!user) {
@@ -31,7 +31,7 @@ export const updateHandler = async (
     const updateUser: UserEntity = await userService.updateUser(
       {
         username: username,
-        avatar: imageUrl,
+        avatar: image_url,
         email: JSON.stringify(emailString),
       },
       user

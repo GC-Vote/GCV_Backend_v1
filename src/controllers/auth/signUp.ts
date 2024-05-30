@@ -11,22 +11,22 @@ export const signUpHandler = async (
   try {
     interface ExpectedEventData {
       username?: string;
-      emailAddresses?: any;
-      imageUrl?: string;
+      email_addresses?: any;
+      image_url?: string;
     }
 
     // Then, when destructuring:
     const { id } = evt.data;
-    const { username, emailAddresses, imageUrl } =
+    const { username, email_addresses, image_url } =
       evt.data as ExpectedEventData;
 
-    const emailString = await generateEmailStringArray(emailAddresses);
+    const emailString = await generateEmailStringArray(email_addresses);
 
     const newUser: UserEntity = await userService.createUser({
       uuid: id,
       username: username,
       email: JSON.stringify(emailString),
-      avatar: imageUrl,
+      avatar: image_url,
     });
     return !!newUser;
   } catch (error) {

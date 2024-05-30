@@ -1,4 +1,4 @@
 import backendSetup from './backend.setup';
-import databaseSetup from './database.setup';
+import { AppDataSource } from './database.setup';
 
-export { backendSetup, databaseSetup};
+export { backendSetup, AppDataSource};

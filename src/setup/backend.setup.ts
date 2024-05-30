@@ -1,18 +1,15 @@
 import { json as bodyParserJSON } from "body-parser";
 import cors from "cors";
-import "dotenv/config";
 import express, { Express } from "express";
 import requestIp from "request-ip";
 
 import { ROUTE_VERSION } from "@/config";
-
 import { MESSAGES } from "@/consts";
 
 import { errorHandlerMiddleware, requestLoggerMiddleware } from "@/middleware";
 
 import appRoutes from "routes";
-
-import path from "path";
+import "dotenv/config";
 
 import {
   ClerkExpressWithAuth,
@@ -40,7 +37,6 @@ const backendSetup = (app: Express) => {
     const { auth } = req as any;
     res.json(auth);
   });
-  // app.get("/protected-endpoint", tokenVerify);
 
   app.use(`/api/${ROUTE_VERSION}`, appRoutes);
   app.use(errorHandlerMiddleware);
