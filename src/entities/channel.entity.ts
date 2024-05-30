@@ -2,15 +2,16 @@ import { Column, Entity, JoinColumn, ManyToMany, ManyToOne } from "typeorm";
 
 import { CoreEntity } from "./core.entity";
 import { UserEntity } from "./user.entity";
+import { UserListType } from "@/types";
 
 @Entity({
   name: "channels",
 })
 export class ChannelEntity extends CoreEntity {
+  @ManyToOne(() => UserEntity, (user) => user.uuid, { nullable: false })
   @JoinColumn({ name: "channeler" })
   user: UserEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.uuid, { nullable: false })
   @Column({ name: "channel_name", type: "varchar", nullable: false })
   channelName: string;
 
@@ -31,12 +32,12 @@ export class ChannelEntity extends CoreEntity {
   })
   visibility: Boolean;
 
-  @Column({ name: "rate", type: "number", nullable: false, default: 0 })
+  @Column({ name: "rate", type: "numeric", nullable: false, default: 0 })
   rate: Number;
 
   @Column({ name: "password", type: "varchar", nullable: true })
   password: string;
 
   @Column({ name: "user_list", type: "jsonb", nullable: false, default: [] })
-  userList: any[];
+  userList: UserListType[];
 }
