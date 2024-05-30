@@ -1,5 +1,5 @@
 import sgMail from "@sendgrid/mail";
-import { Logger } from "./logger";
+import { Logger } from "../logger";
 import "dotenv/config";
 
 export const sendVerifyEmail = async (email: string, verifyCode: number) => {
