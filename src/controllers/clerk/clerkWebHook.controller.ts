@@ -5,7 +5,7 @@ import { Webhook } from "svix";
 import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
 import "dotenv/config";
 import { signUpHandler, updateHandler, deleteUserHandler } from "../auth";
-import { respond } from "@/utils/clerk/response";
+import { respond } from "@/utils/clerk";
 
 const clerkWebHookHandler = async function (req, res) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
