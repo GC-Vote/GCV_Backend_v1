@@ -1,21 +1,21 @@
 import { Column, Entity } from "typeorm";
 
-import { CoreEntity } from "./Core.entity";
+import { CoreEntity } from "./core.entity";
 
 @Entity({
   name: "users",
 })
 export class UserEntity extends CoreEntity {
-  @Column({ name: "uuid", nullable: false })
+  @Column({ name: "uuid", type:'varchar', nullable: false })
   uuid: string;
 
-  @Column({ name: "username", nullable: false })
+  @Column({ name: "username", type:'varchar', nullable: false })
   username: string;
 
-  @Column({ name: "email", nullable: false })
+  @Column({ name: "email", type:'varchar', nullable: false })
   email: string;
 
-  @Column({ name: "avatar", nullable: true})
+  @Column({ name: "avatar", type:'varchar', nullable: true})
   avatar: string;
 
 }
