@@ -1,10 +1,10 @@
-import { UserEntity } from "@/entities";
-import { Response } from "express";
-import { userService } from "@/services";
-import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
 import { NotFoundError } from "@/errors";
+import { Response } from "express";
+import { UserEntity } from "@/entities";
+import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
 import { MESSAGES } from "@/consts";
 import { generateEmailStringArray } from "@/utils";
+import { userService } from "@/services";
 
 export const updateHandler = async (
   evt: WebhookEvent,
@@ -21,7 +21,7 @@ export const updateHandler = async (
     const { username, email_addresses, image_url } =
       evt.data as ExpectedEventData;
 
-    const email_string = await generateEmailStringArray(email_addresses);
+    const emailString = await generateEmailStringArray(email_addresses);
 
     const user: UserEntity = await userService.getUserFromUUID(id);
     if (!user) {
@@ -32,7 +32,7 @@ export const updateHandler = async (
       {
         username: username,
         avatar: image_url,
-        email: JSON.stringify(email_string),
+        email: JSON.stringify(emailString),
       },
       user
     );

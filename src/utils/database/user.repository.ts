@@ -1,7 +1,6 @@
 import { UserEntity } from "@/entities";
-import { DBConnect } from "utils/dbConnector";
+import { AppDataSource } from "@/setup";
 
-export const getUserRepository = async () => {
-  const connection = await DBConnect.getConnection();
-  return connection.getRepository(UserEntity);
-};
+export const getUserRepository = async() => {
+  return AppDataSource.getRepository(UserEntity)
+}

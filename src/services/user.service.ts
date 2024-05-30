@@ -7,14 +7,14 @@ export const createUser = async (
   const userRepository = await getUserRepository();
 
   const newUser: UserEntity = new UserEntity();
-
+  // const { uuid, username, email, avatar } = data;
   newUser.uuid = data.uuid;
   newUser.username = data.username;
   newUser.email = data.email;
   newUser.avatar = data.avatar;
+  // Object.assign(newUser, { uuid, username, email, avatar });
 
   await userRepository.save(newUser);
-
   return newUser;
 };
 
@@ -58,12 +58,7 @@ export const getUser = async (
   // });
   const userInfo: UserEntity | null = await userRepository
     .createQueryBuilder("user")
-    .select([
-      "user.uuid",
-      "user.email",
-      "user.username",
-      "user.avatar",
-    ])
+    .select(["user.uuid", "user.email", "user.username", "user.avatar"])
     // .select()
     .where(data)
     .getOne();

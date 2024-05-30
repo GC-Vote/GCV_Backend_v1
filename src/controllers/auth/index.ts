@@ -2,6 +2,7 @@ export * from "./signUp";
 export * from "./updateUser";
 export * from "./getMe";
 export * from "./getUser";
+export * from "./deleteUser";
 // export * from "./signIn";
 // export * from "./signUp.verify";
 // export * from "./resetRequest.controller";

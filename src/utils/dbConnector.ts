@@ -21,7 +21,6 @@ class DBController {
 
   getConnection = async (): Promise<DataSource> => {
     if (this.connection === null) {
-      console.log("null--------------------");
       this.connection = await this.dbConnection();
       return this.connection;
     } else {
