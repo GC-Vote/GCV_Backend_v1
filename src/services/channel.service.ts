@@ -7,7 +7,11 @@ import {
   NotFoundError,
 } from "@/errors";
 import { ChannelType } from "@/types";
-import { getChannelRepository, getUserRepository } from "@/utils";
+import {
+  getChannelRepository,
+  getUserRepository,
+  validateVisibilityAndPassword,
+} from "@/utils";
 import httpStatus from "http-status";
 
 export const createChannel = async (
@@ -49,21 +53,15 @@ export const updateChannel = async (
   >
 ): Promise<ChannelEntity | null> => {
   const channelRepository = await getChannelRepository();
-  const channelUpdate = await channelRepository.findOneBy({
-    channelName: data.channelName,
-  });
+  const channelUpdate: ChannelEntity | null = await channelRepository.findOneBy(
+    {
+      channelName: data.channelName,
+    }
+  );
   if (!channelUpdate) {
     throw new NotFoundError(MESSAGES.ERROR.CHANNEL_DOES_NOT_EXIST);
   }
-  if (
-    (channelUpdate.visibility && data.password && data.visibility !== false) ||
-    (!channelUpdate.visibility && data.visibility && data.password)
-  ) {
-    throw new CustomError(
-      MESSAGES.VALIDATION.PASSWORD_UPDATE_IS_NOT_ALLOWED,
-      httpStatus.NOT_ACCEPTABLE
-    );
-  }
+  validateVisibilityAndPassword(channelUpdate, data);
   for (const key in data) {
     if (!(key === "channelName" || key === "user" || key === "visibility")) {
       channelUpdate[key] = data[key] || channelUpdate[key];
