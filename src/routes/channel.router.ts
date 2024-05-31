@@ -18,4 +18,11 @@ channelRouter.put(
   channelController.channelUpdate
 );
 
+channelRouter.delete(
+  "/:channelName",
+  ClerkExpressRequireAuth(),
+  channelController.channelDeleteValidator(),
+  channelController.channelDelete
+);
+
 export default channelRouter;

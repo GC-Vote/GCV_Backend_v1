@@ -1,11 +1,12 @@
-import { MESSAGES } from "@/consts";
-import { UserEntity } from "@/entities";
-import { ChannelType, UserListType } from "@/types";
-import { body } from "express-validator";
+import { ChannelType } from "@/types";
 import { Request, Response } from "express";
 import { channelService } from "@/services";
 import httpStatus from "http-status";
-import { errorHandlerWrapper } from "@/utils";
+import { errorHandlerWrapper, getChannelRepository } from "@/utils";
+import { ChannelEntity } from "@/entities";
+import { MESSAGES } from "@/consts";
+import { CustomError, NotFoundError } from "@/errors";
+import { validateUserIsChanneler } from "@/utils/channel/validateUserIsChanneler";
 
 export const channelUpdateValidator = () => {
   return [];
@@ -22,7 +23,17 @@ export const channelUpdateHandler = async (
   req: Request<Params, ResBody, ReqBody, ReqQuery>,
   res: Response
 ) => {
-  const result = await channelService.updateChannel(req.body);
+  const { auth } = req as any;
+  const channelRepository = await getChannelRepository();
+  const channelUpdate: ChannelEntity | null = await channelRepository.findOne({
+    where: { channelName: req.body.channelName },
+    relations: ["user"],
+  });
+  if (!channelUpdate) {
+    throw new NotFoundError(MESSAGES.ERROR.CHANNEL_DOES_NOT_EXIST);
+  }
+  validateUserIsChanneler(channelUpdate.user.uuid, auth.userId);
+  const result = await channelService.updateChannel(req.body, channelUpdate);
   res.status(httpStatus.OK).json(result);
 };
 

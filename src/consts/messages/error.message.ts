@@ -14,3 +14,4 @@ export const UPDATE_NOT_ACCEPTABLE: string = "This user can't be updated";
 export const DELETE_NOT_ACCEPTABLE: string = "This user can't be deleted";
 export const CHANNEL_ALREADY_EXISTS: string = "This channel already exists";
 export const CHANNEL_DOES_NOT_EXIST: string = "Channel doesn't exist";
+export const USER_IS_NOT_CHANNELER: string = "This user is not channeler";

@@ -1,6 +1,5 @@
 import { MESSAGES } from "@/consts";
-import { UserEntity } from "@/entities";
-import { ChannelType, UserListType } from "@/types";
+import { ChannelType } from "@/types";
 import { body } from "express-validator";
 import { Request, Response } from "express";
 import { channelService } from "@/services";

@@ -50,17 +50,10 @@ export const createChannel = async (
 export const updateChannel = async (
   data: { channelName: string } & Partial<
     Omit<ChannelType, "user" | "channelName">
-  >
+  >,
+  channelUpdate: ChannelEntity | null
 ): Promise<ChannelEntity | null> => {
   const channelRepository = await getChannelRepository();
-  const channelUpdate: ChannelEntity | null = await channelRepository.findOneBy(
-    {
-      channelName: data.channelName,
-    }
-  );
-  if (!channelUpdate) {
-    throw new NotFoundError(MESSAGES.ERROR.CHANNEL_DOES_NOT_EXIST);
-  }
   validateVisibilityAndPassword(channelUpdate, data);
   for (const key in data) {
     if (!(key === "channelName" || key === "user" || key === "visibility")) {
@@ -75,4 +68,12 @@ export const updateChannel = async (
   }
   if (channelUpdate.password && data.visibility) channelUpdate.password = null;
   return await channelRepository.save(channelUpdate);
+};
+
+export const deleteChannel = async (channelName: string): Promise<Boolean> => {
+  const channelRepository = await getChannelRepository();
+  const channelDelete = await channelRepository.delete({
+    channelName,
+  });
+  return channelDelete ? true : false;
 };

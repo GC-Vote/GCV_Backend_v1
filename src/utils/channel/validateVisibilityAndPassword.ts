@@ -9,7 +9,7 @@ export const validateVisibilityAndPassword = (
   data: { channelName: string } & Partial<
     Omit<ChannelType, "user" | "channelName">
   >
-) => {
+): void => {
   if (
     (channelUpdate.visibility && data.password && data.visibility !== false) ||
     (!channelUpdate.visibility && data.visibility && data.password)
