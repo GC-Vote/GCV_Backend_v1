@@ -9,3 +9,4 @@ export const CHANNELER_IS_REQUIRED: string = "VerifyCode is required";
 export const CHANNEL_NAME_IS_REQUIRED: string = "VerifyCode is required";
 export const CHANNEL_TITLE_IS_REQUIRED: string = "VerifyCode is required";
 export const PASSWORD_UPDATE_IS_NOT_ALLOWED: string = "This public channel is not allowed to set the password";
+export const USERID_IS_REQUIRED: string = "UserId is required";

@@ -1,4 +1,3 @@
-import { ChannelType } from "@/types";
 import { Request, Response } from "express";
 import { channelService } from "@/services";
 import httpStatus from "http-status";
@@ -6,7 +5,7 @@ import { errorHandlerWrapper, getChannelRepository } from "@/utils";
 import { MESSAGES } from "@/consts";
 import { param } from "express-validator";
 import { ChannelEntity } from "@/entities";
-import { CustomError, NotFoundError } from "@/errors";
+import { NotFoundError } from "@/errors";
 import { validateUserIsChanneler } from "@/utils/channel/validateUserIsChanneler";
 
 export const channelDeleteValidator = () => {

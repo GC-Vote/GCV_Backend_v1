@@ -77,3 +77,16 @@ export const deleteChannel = async (channelName: string): Promise<Boolean> => {
   });
   return channelDelete ? true : false;
 };
+
+export const getChannelByUserId = async (
+  userId: string
+): Promise<ChannelEntity[] | null> => {
+  const channelRepository = await getChannelRepository();
+  const channels = await channelRepository
+    .createQueryBuilder("channels")
+    .innerJoinAndSelect("channels.user", "user", "user.uuid = :userId", {
+      userId,
+    })
+    .getMany();
+  return channels;
+};
