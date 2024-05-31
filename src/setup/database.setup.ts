@@ -1,18 +1,18 @@
-import { DataSource } from "typeorm";
-import { SnakeNamingStrategy } from "typeorm-naming-strategies";
-import { UserEntity } from "@/entities";
-import "dotenv/config";
+import { MESSAGES } from "consts";
 
-export const AppDataSource = new DataSource({
-  type: "postgres",
-  host: process.env.DB_HOST,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  port: Number(process.env.DB_PORT) || 5432,
-  database: process.env.DB_DATABASE,
-  logging: false,
-  synchronize: true,
-  entities: [UserEntity],
-  entitySkipConstructor: true,
-  namingStrategy: new SnakeNamingStrategy(),
-});
+import { DBConnect, Logger } from "utils";
+
+const databaseSetup = async (next: () => void) => {
+  try {
+    await DBConnect.dbCreate();
+    Logger.info(MESSAGES.DATABASE.DATABASE_MIGARATION);
+    await DBConnect.getConnection();
+    Logger.log(MESSAGES.DATABASE.DATABASE_CONNECTION_SUCCESS);
+    next();
+  } catch (error) {
+    Logger.log(error);
+    Logger.error(MESSAGES.DATABASE.DATABASE_CONNECTION_FAILURE);
+  }
+};
+
+export default databaseSetup;

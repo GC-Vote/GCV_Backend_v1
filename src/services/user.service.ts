@@ -58,7 +58,7 @@ export const getUser = async (
   // });
   const userInfo: UserEntity | null = await userRepository
     .createQueryBuilder("user")
-    .select(["user.uuid", "user.email", "user.username", "user.avatar"])
+    .select(["user.uuid", "user.email", "user.username", "user.avatar", "user.reason"])
     // .select()
     .where(data)
     .getOne();
@@ -81,7 +81,7 @@ export const updateUser = async (
 export const deleteUserFromId = async (uuid: string): Promise<Boolean> => {
   const userRepository = await getUserRepository();
   const userInfo: any = await userRepository.delete({
-    uuid: uuid,
+    uuid
   });
   return userInfo && true;
 };
