@@ -15,13 +15,13 @@ export class CustomError extends Error {
 
     this.message = message;
 
-    if (this.errorCode) {
+    if (errorCode) {
       this.errorCode = errorCode;
     } else {
       this.errorCode = httpStatus.BAD_REQUEST;
     }
 
-    this.errorCode = errorCode;
+    // this.errorCode = errorCode;
     this.reasonCode = reasonCode;
     this.rootErr = rootErr;
   }

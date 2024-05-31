@@ -11,4 +11,11 @@ channelRouter.post(
   channelController.channelCreate
 );
 
+channelRouter.put(
+  "/",
+  ClerkExpressRequireAuth(),
+  channelController.channelUpdateValidator(),
+  channelController.channelUpdate
+);
+
 export default channelRouter;
