@@ -58,7 +58,7 @@ export const getUser = async (
   // });
   const userInfo: UserEntity | null = await userRepository
     .createQueryBuilder("user")
-    .select(["user.uuid", "user.email", "user.username", "user.avatar"])
+    .select(["user.uuid", "user.email", "user.username", "user.avatar", "user.reason"])
     // .select()
     .where(data)
     .getOne();

@@ -8,7 +8,11 @@ import { UserListType } from "@/types";
   name: "channels",
 })
 export class ChannelEntity extends CoreEntity {
-  @ManyToOne(() => UserEntity, (user) => user.uuid, { nullable: false })
+  @ManyToOne(
+    () => UserEntity,
+    (user) => user.uuid,
+    { onDelete: "CASCADE", onUpdate:'CASCADE' },
+  )
   @JoinColumn({ name: "channeler" })
   user: UserEntity;
 
