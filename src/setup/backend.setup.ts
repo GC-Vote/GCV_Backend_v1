@@ -3,6 +3,7 @@ import cors from "cors";
 import express, { Express } from "express";
 import requestIp from "request-ip";
 import rateLimit from "express-rate-limit";
+import fileUpload from "express-fileupload"
 
 import { ROUTE_VERSION } from "@/config";
 import { MESSAGES } from "@/consts";
@@ -45,13 +46,15 @@ const backendSetup = (app: Express) => {
     res.send("OK");
   });
 
-  // app.use("/ipcheck", (req, res) => {
-  //   // console.log(req)
-  //   console.log(req.ip);
-  //   // console.log(req.socket);
-  //   console.log(req.socket.remoteAddress);
-  //   res.json("ipcheck");
-  // });
+  app.use(fileUpload({
+    createParentPath: true,
+    abortOnLimit: true,
+    // limits: {fileSize: 1000*1024*1024},
+    useTempFiles: true, 
+    tempFileDir: '/tmp/',
+    safeFileNames: true,
+    preserveExtension: true
+  }));
 
   app.get("/protected-endpoint", ClerkExpressRequireAuth(), (req, res) => {
     const { auth } = req as any;
