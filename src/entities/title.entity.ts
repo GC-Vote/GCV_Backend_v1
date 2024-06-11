@@ -34,7 +34,7 @@ export class TitleEntity extends CoreEntity {
   @Column({ name: "image", type: "varchar", nullable: true })
   image: string;
 
-  @Column({ name: "voting_period", type: "datetime", nullable: false })
+  @Column({ name: "voting_period", type: "timestamp", nullable: false })
   period: Date;
 
   @Column({
@@ -48,6 +48,7 @@ export class TitleEntity extends CoreEntity {
   @Column({ name: "suggestion_limit", type: "numeric", nullable: true })
   suggestionLimit: number;
 
+  // whether enable to be searched or not
   @Column({
     name: "permissioned",
     type: "boolean",
@@ -67,6 +68,7 @@ export class TitleEntity extends CoreEntity {
   @Column({ name: "vote_count", type: "numeric", nullable: false, default: 0 })
   voteCount: number;
 
-  @Column({ name: "status", type: "boolean", nullable: false, default: false })
-  status: boolean;
+  // 0: candidate period   1: progress period   2: checking period   3: expire period
+  @Column({ name: "status", type: "numeric", nullable: false, default: 0 })
+  status: number;
 }

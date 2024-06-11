@@ -2,6 +2,8 @@ import { DataSource, DataSourceOptions, createConnection } from "typeorm";
 import { createDatabase } from "typeorm-extension";
 
 import { dbOptions } from "config";
+import { Logger } from "./logger";
+import { MESSAGES } from "@/consts";
 
 class DBController {
   connection: DataSource | null = null;
@@ -12,11 +14,15 @@ class DBController {
       ifNotExist: true,
       options,
     });
+    await this.syncDatabase();
     this.connection = await this.dbConnection();
   };
 
   dbConnection = async (): Promise<DataSource> => {
-    return await createConnection(dbOptions);
+    if (!this.connection) {
+      this.connection = await createConnection(dbOptions);
+    }
+    return this.connection;
   };
 
   getConnection = async (): Promise<DataSource> => {
@@ -25,6 +31,18 @@ class DBController {
       return this.connection;
     } else {
       return this.connection;
+    }
+  };
+
+  // Method to synchronize the database schema
+  syncDatabase = async () => {
+    try {
+      await this.getConnection().then((connection) => {
+        return connection.synchronize();
+      });
+      Logger.log(MESSAGES.DATABASE.DATABASE_SYNCHRONIZED_SUCCESS)
+    } catch (error) {
+      Logger.log(MESSAGES.DATABASE.DATABASE_SYNCHRONIZED_FAILURE, error)
     }
   };
 }
