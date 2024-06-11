@@ -58,15 +58,28 @@ export const createTitle = async (
   return await titleRepository.save(title);
 };
 
-export const getChannelByUserId = async (
+export const getTitleByUserId = async (
   userId: string
-): Promise<ChannelEntity[] | null> => {
-  const channelRepository = await getChannelRepository();
-  const channels = await channelRepository
-    .createQueryBuilder("channels")
-    .innerJoinAndSelect("channels.user", "user", "user.uuid = :userId", {
+): Promise<TitleEntity[] | null> => {
+  const titleRepository = await getTitleRepository();
+  const titles = await titleRepository
+    .createQueryBuilder("titles")
+    .innerJoinAndSelect("titles.user", "user", "user.uuid = :userId", {
       userId,
     })
     .getMany();
-  return channels;
+  return titles;
+};
+
+export const getTitleByChannelName = async (
+  channelName: string
+): Promise<TitleEntity[] | null> => {
+  const titleRepository = await getTitleRepository();
+  const titles = await titleRepository
+    .createQueryBuilder("titles")
+    .innerJoinAndSelect("titles.channel", "channel", "channel.channelName = :channelName", {
+      channelName,
+    })
+    .getMany();
+  return titles;
 };
