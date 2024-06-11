@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { MESSAGES } from "@/consts";
 import { param } from "express-validator";
-import { channelService } from "@/services";
+import { channelService, titleService } from "@/services";
 import httpStatus from "http-status";
 import { errorHandlerWrapper } from "@/utils";
 
-export const getMyChannelValidator = () => {
+export const getMyTitleValidator = () => {
   return [];
 };
 
@@ -14,14 +14,14 @@ type ResBody = unknown;
 type ReqBody = unknown;
 type ReqQuery = unknown;
 
-export const getMyChannelHandler = async (
+export const getMyTitleHandler = async (
   req: Request<Params, ResBody, ReqBody, ReqQuery>,
   res: Response
 ) => {
   const { auth } = req as any;
   const userId = auth.userId;
-  const result = await channelService.getChannelByUserId(userId);
+  const result = await titleService.getTitleByUserId(userId);
   res.status(httpStatus.OK).json({ result });
 };
 
-export const getMyChannel = errorHandlerWrapper(getMyChannelHandler);
+export const getMyTitle = errorHandlerWrapper(getMyTitleHandler);

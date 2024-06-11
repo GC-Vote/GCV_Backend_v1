@@ -1,7 +1,6 @@
 import { MESSAGES } from "@/consts";
 import { ChannelEntity, UserEntity } from "@/entities";
 import {
-  ArgumentValidationError,
   CustomError,
   DuplicateError,
   NotFoundError,
