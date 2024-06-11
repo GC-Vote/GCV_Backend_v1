@@ -26,6 +26,13 @@ channelRouter.delete(
 );
 
 channelRouter.get(
+  "/",
+  ClerkExpressRequireAuth(),
+  channelController.getMyChannelValidator(),
+  channelController.getMyChannelHandler
+);
+
+channelRouter.get(
   "/:userId",
   ClerkExpressRequireAuth(),
   channelController.getChannelByUserValidator(),
