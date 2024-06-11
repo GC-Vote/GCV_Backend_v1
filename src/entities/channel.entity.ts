@@ -28,6 +28,7 @@ export class ChannelEntity extends CoreEntity {
   @Column({ name: "image", type: "varchar", nullable: true })
   image: string;
 
+  // whether public or private channel
   @Column({
     name: "visibility",
     type: "boolean",
@@ -37,11 +38,12 @@ export class ChannelEntity extends CoreEntity {
   visibility: Boolean;
 
   @Column({ name: "rate", type: "numeric", nullable: false, default: 0 })
-  rate: Number;
+  rate: number;
 
   @Column({ name: "password", type: "varchar", nullable: true })
   password: string;
 
+  // list of users joined for public channel & users who can join for private channel
   @Column({ name: "user_list", type: "jsonb", nullable: false, default: [] })
   userList: UserListType[];
 }

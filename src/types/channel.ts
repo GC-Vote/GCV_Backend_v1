@@ -6,7 +6,7 @@ export interface ChannelType {
   title: string;
   description?: string;
   image?: string;
-  visibility?: Boolean;
+  visibility?: boolean;
   rate?: number;
   password?: string;
   userList?: UserListType[];

@@ -18,6 +18,8 @@ export class UserEntity extends CoreEntity {
   @Column({ name: "avatar", type: "varchar", nullable: true })
   avatar: string;
 
+  // reason code mean:
+  // 0: normal   1: block
   @Column({ name: "reason", type: "numeric", nullable: false, default: 0 })
   reason: number;
 }
