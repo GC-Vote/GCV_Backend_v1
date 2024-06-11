@@ -7,9 +7,14 @@ import { ChannelEntity } from "@/entities";
 import { MESSAGES } from "@/consts";
 import { CustomError, NotFoundError } from "@/errors";
 import { validateUserIsChanneler } from "@/utils/channel/validateUserIsChanneler";
+import { body } from "express-validator";
 
 export const channelUpdateValidator = () => {
-  return [];
+  return [
+    body("channelName")
+      .notEmpty()
+      .withMessage(MESSAGES.VALIDATION.CHANNEL_NAME_IS_REQUIRED),
+  ];
 };
 
 type Params = unknown;
