@@ -1,5 +1,6 @@
-import { UserEntity } from "@/entities";
-import { getUserRepository } from "utils";
+import { ChannelEntity, UserEntity } from "@/entities";
+import { getChannelRepository, getUserRepository } from "utils";
+import "dotenv/config";
 
 export const createUser = async (
   data: Pick<UserEntity, "uuid" | "username" | "email" | "avatar">
@@ -58,7 +59,13 @@ export const getUser = async (
   // });
   const userInfo: UserEntity | null = await userRepository
     .createQueryBuilder("user")
-    .select(["user.uuid", "user.email", "user.username", "user.avatar", "user.reason"])
+    .select([
+      "user.uuid",
+      "user.email",
+      "user.username",
+      "user.avatar",
+      "user.reason",
+    ])
     // .select()
     .where(data)
     .getOne();
@@ -78,10 +85,29 @@ export const updateUser = async (
   return updateUser;
 };
 
-export const deleteUserFromId = async (uuid: string): Promise<Boolean> => {
+export const deleteUserFromId = async (
+  user: UserEntity
+): Promise<UserEntity> => {
   const userRepository = await getUserRepository();
-  const userInfo: any = await userRepository.delete({
-    uuid
+  const userId = user.uuid;
+  user.deleteAt = new Date(Date.now());
+  await userRepository.save(user);
+
+  // Set the deletedAt of the private channel of this deleted user & change the owner of public channel
+  const channelRepository = await getChannelRepository();
+  const channels: ChannelEntity[] = await channelRepository
+    .createQueryBuilder("channels")
+    .innerJoinAndSelect("channels.user", "user", "user.uuid = :userId", {
+      userId,
+    })
+    .getMany();
+  const updatePromises = channels.map(async (channel) => {
+    if (channel.visibility == false) {
+      channel.deleteAt = new Date(Date.now());
+    } else {
+      channel.user = await getUserFromUUID(process.env.ADMIN_USER_ID);
+    }
   });
-  return userInfo && true;
+  await Promise.all(updatePromises);
+  return user;
 };

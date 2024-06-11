@@ -2,6 +2,9 @@
 import { Response } from "express"; // Assuming Response is imported from express, adjust accordingly.
 import { userService } from "services";
 import { WebhookEvent } from "@clerk/nextjs/dist/types/server";
+import { UserEntity } from "@/entities";
+import { NotFoundError } from "@/errors";
+import { MESSAGES } from "@/consts";
 
 /**
  * Handles deletion of a user based on the event data.
@@ -18,8 +21,13 @@ export const deleteUserHandler = async (
     // Destructure the event data to extract the user ID.
     const { id } = evt.data;
 
+    const user: UserEntity = await userService.getUserFromUUID(id);
+    if (!user) {
+      throw new NotFoundError(MESSAGES.ERROR.USER_DOES_NOT_EXIST);
+    }
+
     // Use the extracted ID to delete the user.
-    const deleteResult = await userService.deleteUserFromId(id);
+    const deleteResult = await userService.deleteUserFromId(user);
 
     // Return true if the user was successfully deleted.
     return !!deleteResult;
