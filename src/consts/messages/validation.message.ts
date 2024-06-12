@@ -17,3 +17,7 @@ export const CHANNEL_IS_REQUIRED: string = "Channel index of the title is requir
 export const TITLE_NAME_IS_REQUIRED: string = "Title name is required";
 export const TITLE_IS_REQUIRED: string = "Title is required";
 export const TITLE_PERIOD_IS_REQUIRED: string = "The period of this title is required";
+
+export const TITLE_IS_EXPIRED: string = "This title is already expired!";
+export const SUGGESTER_IS_REQUIRED: string = "Suggester is required";
+export const DESCRIPTION_IS_REQUIRED: string = "Description is required";

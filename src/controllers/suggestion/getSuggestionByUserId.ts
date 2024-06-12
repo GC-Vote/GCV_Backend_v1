@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { titleService } from "@/services";
+import { suggestionService } from "@/services";
 import httpStatus from "http-status";
 import { errorHandlerWrapper } from "@/utils";
 
-export const getTitleByUserValidator = () => {
+export const getSuggestionByUserValidator = () => {
   return [];
 };
 
@@ -14,13 +14,13 @@ type ResBody = unknown;
 type ReqBody = unknown;
 type ReqQuery = unknown;
 
-export const getTitleByUserHandler = async (
+export const getSuggestionByUserHandler = async (
   req: Request<Params, ResBody, ReqBody, ReqQuery>,
   res: Response
 ) => {
   const { userId } = req.params;
-  const result = await titleService.getTitleByUserId(userId);
+  const result = await suggestionService.getSuggestionByUserId(userId);
   res.status(httpStatus.OK).json({ result });
 };
 
-export const getTitleByUser = errorHandlerWrapper(getTitleByUserHandler);
+export const getSuggestionByUser = errorHandlerWrapper(getSuggestionByUserHandler);
