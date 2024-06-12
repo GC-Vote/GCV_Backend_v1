@@ -18,9 +18,10 @@ export const TITLE_NAME_IS_REQUIRED: string = "Title name is required";
 export const TITLE_IS_REQUIRED: string = "Title is required";
 export const TITLE_PERIOD_IS_REQUIRED: string = "The period of this title is required";
 export const STATUS_IS_REQUIRED: string = "The status of this title is required";
-export const VOTE_COUNT_IS_REQUIRED: string = "The increased voting count of this title is required";
-export const SUGGESTION_COUNT_IS_REQUIRED: string = "The increased suggestion count of this title is required";
+export const VOTE_COUNT_IS_REQUIRED: string = "The increased voting count is required";
+export const SUGGESTION_COUNT_IS_REQUIRED: string = "The increased suggestion count is required";
 
 export const TITLE_IS_EXPIRED: string = "This title is already expired!";
 export const SUGGESTER_IS_REQUIRED: string = "Suggester is required";
 export const DESCRIPTION_IS_REQUIRED: string = "Description is required";
+export const SUGGESTION_ID_IS_REQUIRED: string = "The id of the suggestion is required";

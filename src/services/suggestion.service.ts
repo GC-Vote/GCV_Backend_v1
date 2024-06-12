@@ -95,3 +95,12 @@ export const getSuggestionByTitleName = async (
     .getMany();
   return suggestions;
 };
+
+export const increaseSuggestionVoteCount = async (
+  suggestion: SuggestionEntity,
+  voteCount: number
+): Promise<SuggestionEntity | null> => {
+  const suggestionRepository = await getSuggestionRepository();
+  suggestion.voteCount += voteCount;
+  return await suggestionRepository.save(suggestion);
+};
