@@ -37,6 +37,7 @@ export class TitleEntity extends CoreEntity {
   @Column({ name: "voting_period", type: "timestamp", nullable: false })
   period: Date;
 
+  // 0: Head counting   1: Token counting   2: Token holding
   @Column({
     name: "voting_method",
     type: "numeric",
