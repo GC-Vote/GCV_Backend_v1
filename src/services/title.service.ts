@@ -86,3 +86,38 @@ export const getTitleByChannelName = async (
     .getMany();
   return titles;
 };
+
+export const setTitleStatus = async (
+  title: TitleEntity,
+  status: number
+): Promise<TitleEntity | null> => {
+  const titleRepository = await getTitleRepository();
+  title.status = status;
+  return await titleRepository.save(title);
+};
+
+export const increaseTitleVoteCount = async (
+  title: TitleEntity,
+  voteCount: number
+): Promise<TitleEntity | null> => {
+  const titleRepository = await getTitleRepository();
+  title.voteCount += voteCount;
+  return await titleRepository.save(title);
+};
+
+export const increaseTitleSuggestionCount = async (
+  title: TitleEntity,
+  suggestionCount: number
+): Promise<TitleEntity | null> => {
+  const titleRepository = await getTitleRepository();
+  title.suggestionCount += suggestionCount;
+  return await titleRepository.save(title);
+};
+
+export const changeTitlePermissioned = async (
+  title: TitleEntity
+): Promise<TitleEntity | null> => {
+  const titleRepository = await getTitleRepository();
+  title.permissioned = !title.permissioned;
+  return await titleRepository.save(title);
+};

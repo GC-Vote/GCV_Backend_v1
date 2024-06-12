@@ -25,4 +25,11 @@ suggestionRouter.get(
     suggestionController.getSuggestionByTitle
 );
 
+suggestionRouter.post(
+    "/voteCount",
+    ClerkExpressRequireAuth(),
+    suggestionController.suggestionIncreaseVoteCountValidator,
+    suggestionController.suggestionIncreaseVoteCount
+  );
+
 export default suggestionRouter;
