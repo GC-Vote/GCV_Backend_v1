@@ -6,11 +6,7 @@ import httpStatus from "http-status";
 import { errorHandlerWrapper } from "@/utils";
 
 export const getTitleByUserValidator = () => {
-  return [
-    param("userId")
-      .notEmpty()
-      .withMessage(MESSAGES.VALIDATION.USERID_IS_REQUIRED),
-  ];
+  return [];
 };
 
 type Params = {

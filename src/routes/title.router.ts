@@ -26,7 +26,7 @@ titleRouter.get(
 );
 
 titleRouter.get(
-    "/:channelName",
+    "/channelName/:channelName",
     ClerkExpressRequireAuth(),
     titleController.getTitleByChannelValidator(),
     titleController.getTitleByChannel

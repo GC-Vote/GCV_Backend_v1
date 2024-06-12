@@ -89,10 +89,6 @@ export const deleteUserFromId = async (
   user: UserEntity
 ): Promise<UserEntity> => {
   const userId = user.uuid;
-  console.log("111111");
-  console.log("user:");
-  console.log(user);
-  console.log(userId);
   // Set the deletedAt of the private channel of this deleted user & change the owner of public channel
   const channelRepository = await getChannelRepository();
   const channels = await channelRepository
@@ -101,20 +97,14 @@ export const deleteUserFromId = async (
       userId,
     })
     .getMany();
-  console.log("22222222:");
-  console.log(channels);
   const updatePromises = channels.map(async (channel) => {
     if (channel.visibility == false) {
-      console.log("3333333");
       channel.deleteAt = new Date(Date.now());
     } else {
-      console.log("44444444");
       channel.user = await getUserFromUUID(process.env.ADMIN_USER_ID);
     }
     await channelRepository.save(channel);
   });
-  console.log("555555555:");
-  console.log(updatePromises);
   await Promise.all(updatePromises);
 
   const userRepository = await getUserRepository();
