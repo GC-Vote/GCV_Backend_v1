@@ -1,10 +1,6 @@
 import { MESSAGES } from "@/consts";
 import { ChannelEntity, UserEntity } from "@/entities";
-import {
-  CustomError,
-  DuplicateError,
-  NotFoundError,
-} from "@/errors";
+import { CustomError, DuplicateError, NotFoundError } from "@/errors";
 import { ChannelType } from "@/types";
 import {
   getChannelRepository,
@@ -69,12 +65,13 @@ export const updateChannel = async (
   return await channelRepository.save(channelUpdate);
 };
 
-export const deleteChannel = async (channelName: string): Promise<Boolean> => {
+export const deleteChannel = async (channelName: string): Promise<ChannelEntity> => {
   const channelRepository = await getChannelRepository();
-  const channelDelete = await channelRepository.delete({
-    channelName,
+  const channelDelete = await channelRepository.findOneBy({
+    channelName: channelName,
   });
-  return channelDelete ? true : false;
+  channelDelete.deleteAt = new Date(Date.now());
+  return channelDelete;
 };
 
 export const getChannelByUserId = async (

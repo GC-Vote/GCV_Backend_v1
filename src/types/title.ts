@@ -11,5 +11,5 @@ export interface TitleType {
   permissioned?: boolean;
   suggestionCount?: number;
   voteCount?: number;
-  status?:boolean
+  status?:number
 }

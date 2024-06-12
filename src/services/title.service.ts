@@ -29,11 +29,9 @@ export const createTitle = async (
       channelName: data.channel,
     }
   );
-  const titleEntity: TitleEntity | null = await titleRepository.findOneBy(
-    {
-      titleName: data.titleName,
-    }
-  );
+  const titleEntity: TitleEntity | null = await titleRepository.findOneBy({
+    titleName: data.titleName,
+  });
   if (titleEntity) {
     throw new DuplicateError(MESSAGES.ERROR.TITLE_ALREADY_EXISTS);
   }
@@ -43,17 +41,17 @@ export const createTitle = async (
   if (!channelEntity) {
     throw new NotFoundError(MESSAGES.ERROR.CHANNEL_DOES_NOT_EXIST);
   }
-  if(channelEntity.deleteAt) {
+  if (channelEntity.deleteAt) {
     throw new CustomError(
       MESSAGES.VALIDATION.CHANNEL_IS_BLOCKED,
       httpStatus.NOT_ACCEPTABLE
-    )
+    );
   }
   const title = new TitleEntity();
   Object.assign(title, {
     ...data,
     user: userEntity,
-    channel: channelEntity
+    channel: channelEntity,
   });
   return await titleRepository.save(title);
 };
@@ -77,9 +75,14 @@ export const getTitleByChannelName = async (
   const titleRepository = await getTitleRepository();
   const titles = await titleRepository
     .createQueryBuilder("titles")
-    .innerJoinAndSelect("titles.channel", "channel", "channel.channelName = :channelName", {
-      channelName,
-    })
+    .innerJoinAndSelect(
+      "titles.channel",
+      "channel",
+      "channel.channelName = :channelName",
+      {
+        channelName,
+      }
+    )
     .getMany();
   return titles;
 };
