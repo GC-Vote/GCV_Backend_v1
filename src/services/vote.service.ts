@@ -5,26 +5,26 @@ import {
   TitleEntity,
   UserEntity,
 } from "@/entities";
-import {
-  CustomError,
-  NotFoundError,
-} from "@/errors";
-import { SuggestionType, TitleType } from "@/types";
+import { VoteEntity } from "@/entities/vote.entity";
+import { CustomError, NotFoundError } from "@/errors";
+import { VoteType } from "@/types";
 import {
   getChannelRepository,
   getTitleRepository,
   getUserRepository,
-  getSuggestionRepository
+  getSuggestionRepository,
+  getVoteRepository
 } from "@/utils";
 import httpStatus from "http-status";
 
-export const createSuggestion = async (
-  data: SuggestionType
-): Promise<SuggestionEntity | null> => {
+export const createVote = async (
+  data: VoteType
+): Promise<VoteEntity | null> => {
   const userRepository = await getUserRepository();
   const channelRepository = await getChannelRepository();
   const titleRepository = await getTitleRepository();
   const suggestionRepository = await getSuggestionRepository();
+  const voteRepository = await getVoteRepository();
   const userEntity: UserEntity | null = await userRepository.findOneBy({
     uuid: data.user,
   });
@@ -64,14 +64,14 @@ export const createSuggestion = async (
       httpStatus.NOT_ACCEPTABLE
     );
   }
-  const suggestion = new SuggestionEntity();
-  Object.assign(suggestion, {
+  const vote = new VoteEntity();
+  Object.assign(vote, {
     ...data,
     user: userEntity,
     channel: channelEntity,
     title: titleEntity,
   });
-  return await suggestionRepository.save(suggestion);
+  return await voteRepository.save(vote);
 };
 
 export const getSuggestionByUserId = async (

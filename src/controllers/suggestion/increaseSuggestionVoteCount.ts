@@ -2,7 +2,7 @@ import { MESSAGES } from "@/consts";
 import { SuggestionEntity, TitleEntity } from "@/entities";
 import { suggestionService, titleService } from "@/services";
 import { errorHandlerWrapper } from "@/utils";
-import { getSuggestionRepository } from "@/utils/database/suggestion.repository";
+import { getSuggestionRepository } from "@/utils";
 import { Request, Response } from "express";
 import { body } from "express-validator";
 import httpStatus from "http-status";
