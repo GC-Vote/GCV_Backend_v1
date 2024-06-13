@@ -25,3 +25,4 @@ export const TITLE_IS_EXPIRED: string = "This title is already expired!";
 export const SUGGESTER_IS_REQUIRED: string = "Suggester is required";
 export const DESCRIPTION_IS_REQUIRED: string = "Description is required";
 export const SUGGESTION_ID_IS_REQUIRED: string = "The id of the suggestion is required";
+export const TITLE_IS_NOT_IN_THE_CHANNEL: string = "This title is not in the channel";
