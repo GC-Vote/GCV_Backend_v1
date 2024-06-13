@@ -1,5 +1,10 @@
 import { MESSAGES } from "@/consts";
-import { ChannelEntity, SuggestionEntity, TitleEntity, UserEntity } from "@/entities";
+import {
+  ChannelEntity,
+  SuggestionEntity,
+  TitleEntity,
+  UserEntity,
+} from "@/entities";
 import {
   ArgumentValidationError,
   CustomError,
@@ -31,8 +36,9 @@ export const createSuggestion = async (
       channelName: data.channel,
     }
   );
-  const titleEntity: TitleEntity | null = await titleRepository.findOneBy({
-    titleName: data.title,
+  const titleEntity: TitleEntity | null = await titleRepository.findOne({
+    where: { titleName: data.title },
+    relations: ["channels"],
   });
   if (!userEntity) {
     throw new NotFoundError(MESSAGES.ERROR.USER_DOES_NOT_EXIST);
@@ -55,12 +61,18 @@ export const createSuggestion = async (
       httpStatus.NOT_ACCEPTABLE
     );
   }
+  if (titleEntity.channel.channelName != data.channel) {
+    throw new CustomError(
+      MESSAGES.VALIDATION.TITLE_IS_NOT_IN_THE_CHANNEL,
+      httpStatus.NOT_ACCEPTABLE
+    );
+  }
   const suggestion = new SuggestionEntity();
   Object.assign(suggestion, {
     ...data,
     user: userEntity,
     channel: channelEntity,
-    title: titleEntity
+    title: titleEntity,
   });
   return await suggestionRepository.save(suggestion);
 };
