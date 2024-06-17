@@ -75,7 +75,7 @@ export const getTitleByChannelName = async (
   const titleRepository = await getTitleRepository();
   const titles = await titleRepository
     .createQueryBuilder("titles")
-    .innerJoinAndSelect(
+    .innerJoin(
       "titles.channel",
       "channel",
       "channel.channelName = :channelName",
@@ -83,6 +83,25 @@ export const getTitleByChannelName = async (
         channelName,
       }
     )
+    .leftJoinAndSelect("titles.user", "user")
+    // .select([
+    //   "titles.id",
+    //   "titles.createdAt",
+    //   "titles.updateAt",
+    //   "titles.deleteAt",
+    //   "titles.titleName",
+    //   "titles.title",
+    //   "titles.description",
+    //   "titles.image",
+    //   "titles.period",
+    //   "titles.method",
+    //   "titles.suggestionLimit",
+    //   "titles.permissioned",
+    //   "titles.suggestionCount",
+    //   "titles.voteCount",
+    //   "titles.status",
+    // "channel.channelName"
+    // ])
     .getMany();
   return titles;
 };

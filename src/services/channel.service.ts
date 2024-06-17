@@ -96,3 +96,10 @@ export const getAllChannel = async (): Promise<ChannelEntity[] | null> => {
   });
   return channels;
 };
+
+export const getChannelByName = async (
+  channelName: string
+): Promise<ChannelEntity | null> => {
+  const channelRepository = await getChannelRepository();
+  return await channelRepository.findOneBy({ channelName });
+};

@@ -40,6 +40,13 @@ channelRouter.get(
 );
 
 channelRouter.get(
+  "/channelName/:channelName",
+  // ClerkExpressRequireAuth(),
+  channelController.getChannelByNameValidator(),
+  channelController.getChannelByName
+);
+
+channelRouter.get(
   "/all",
   // ClerkExpressRequireAuth(),
   channelController.getAllChannelValidator(),
