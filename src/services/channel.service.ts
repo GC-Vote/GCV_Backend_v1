@@ -65,7 +65,9 @@ export const updateChannel = async (
   return await channelRepository.save(channelUpdate);
 };
 
-export const deleteChannel = async (channelName: string): Promise<ChannelEntity> => {
+export const deleteChannel = async (
+  channelName: string
+): Promise<ChannelEntity> => {
   const channelRepository = await getChannelRepository();
   const channelDelete = await channelRepository.findOneBy({
     channelName: channelName,
@@ -84,5 +86,13 @@ export const getChannelByUserId = async (
       userId,
     })
     .getMany();
+  return channels;
+};
+
+export const getAllChannel = async (): Promise<ChannelEntity[] | null> => {
+  const channelRepository = await getChannelRepository();
+  const channels = await channelRepository.find({
+    relations: ["user"],
+  });
   return channels;
 };

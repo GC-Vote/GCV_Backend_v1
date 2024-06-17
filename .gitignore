@@ -89,3 +89,6 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# Static Data
+public/upload/img

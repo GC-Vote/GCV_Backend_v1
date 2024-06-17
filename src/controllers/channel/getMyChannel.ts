@@ -20,8 +20,8 @@ export const getMyChannelHandler = async (
 ) => {
   const { auth } = req as any;
   const userId = auth.userId;
-  const result = await channelService.getChannelByUserId(userId);
-  res.status(httpStatus.OK).json({ result });
+  const channel = await channelService.getChannelByUserId(userId);
+  res.status(httpStatus.OK).json({ channel });
 };
 
 export const getMyChannel = errorHandlerWrapper(getMyChannelHandler);

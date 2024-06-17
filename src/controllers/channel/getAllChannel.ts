@@ -5,28 +5,21 @@ import { channelService } from "@/services";
 import httpStatus from "http-status";
 import { errorHandlerWrapper } from "@/utils";
 
-export const getChannelByUserValidator = () => {
-  return [
-    param("userId")
-      .notEmpty()
-      .withMessage(MESSAGES.VALIDATION.USERID_IS_REQUIRED),
-  ];
+export const getAllChannelValidator = () => {
+  return [];
 };
 
-type Params = {
-  userId: string;
-};
+type Params = unknown;
 type ResBody = unknown;
 type ReqBody = unknown;
 type ReqQuery = unknown;
 
-export const getChannelByUserHandler = async (
+export const getAllChannelHandler = async (
   req: Request<Params, ResBody, ReqBody, ReqQuery>,
   res: Response
 ) => {
-  const { userId } = req.params;
-  const channels = await channelService.getChannelByUserId(userId);
+  const channels = await channelService.getAllChannel();
   res.status(httpStatus.OK).json({ channels });
 };
 
-export const getChannelByUser = errorHandlerWrapper(getChannelByUserHandler);
+export const getChannel = errorHandlerWrapper(getAllChannelHandler);
