@@ -20,16 +20,23 @@ titleRouter.get(
 
 titleRouter.get(
   "/:userId",
-  ClerkExpressRequireAuth(),
+  // ClerkExpressRequireAuth(),
   titleController.getTitleByUserValidator(),
   titleController.getTitleByUser
 );
 
 titleRouter.get(
   "/channelName/:channelName",
-  ClerkExpressRequireAuth(),
+  // ClerkExpressRequireAuth(),
   titleController.getTitleByChannelValidator(),
   titleController.getTitleByChannel
+);
+
+titleRouter.get(
+  "/titleName/:titleName",
+  // ClerkExpressRequireAuth(),
+  titleController.getTitleByNameValidator(),
+  titleController.getTitleByName
 );
 
 titleRouter.post(

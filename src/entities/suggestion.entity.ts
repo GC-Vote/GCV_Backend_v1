@@ -13,7 +13,7 @@ export class SuggestionEntity extends CoreEntity {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
-  @JoinColumn({ name: "titler" })
+  @JoinColumn({ name: "suggester" })
   user: UserEntity;
 
   @ManyToOne(() => ChannelEntity, (channel) => channel.channelName, {
@@ -30,8 +30,14 @@ export class SuggestionEntity extends CoreEntity {
   @JoinColumn({ name: "title_index" })
   title: TitleEntity;
 
+  @Column({ name: "solution", type: "text", nullable: false })
+  solution: string;
+  
   @Column({ name: "description", type: "text", nullable: false })
   description: string;
+
+  @Column({ name: "image", type: "varchar", nullable: true })
+  image: string;
 
   @Column({ name: "vote_count", type: "numeric", nullable: true, default: 0 })
   voteCount: number;

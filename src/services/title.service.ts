@@ -69,6 +69,17 @@ export const getTitleByUserId = async (
   return titles;
 };
 
+export const getTitleByName = async (
+  titleName: string
+): Promise<TitleEntity | null> => {
+  const titleRepository = await getTitleRepository();
+  const title: TitleEntity | null = await titleRepository.findOne({
+    where: { titleName },
+    relations: ["user", "channel"],
+  });
+  return title;
+};
+
 export const getTitleByChannelName = async (
   channelName: string
 ): Promise<TitleEntity[] | null> => {

@@ -101,5 +101,8 @@ export const getChannelByName = async (
   channelName: string
 ): Promise<ChannelEntity | null> => {
   const channelRepository = await getChannelRepository();
-  return await channelRepository.findOneBy({ channelName });
+  return await channelRepository.findOne({
+    where: { channelName },
+    relations: ["user"],
+  });
 };

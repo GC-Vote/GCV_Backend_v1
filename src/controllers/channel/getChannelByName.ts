@@ -4,9 +4,14 @@ import { param } from "express-validator";
 import { channelService, titleService } from "@/services";
 import httpStatus from "http-status";
 import { errorHandlerWrapper } from "@/utils";
+import { NotFoundError } from "@/errors";
 
 export const getChannelByNameValidator = () => {
-  return [];
+  return [
+    param("channelName")
+      .notEmpty()
+      .withMessage(MESSAGES.VALIDATION.CHANNEL_NAME_IS_REQUIRED),
+  ];
 };
 
 type Params = { channelName: string };
@@ -20,6 +25,9 @@ export const getChannelByNameHandler = async (
 ) => {
   const { channelName } = req.params;
   const channel = await channelService.getChannelByName(channelName);
+  if (!channel) {
+    throw new NotFoundError(MESSAGES.ERROR.CHANNEL_DOES_NOT_EXIST);
+  }
   res.status(httpStatus.OK).json({ channel });
 };
 

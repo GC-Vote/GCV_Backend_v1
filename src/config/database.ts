@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { DataSourceOptions } from 'typeorm';
 
-import { ChannelEntity, TitleEntity, UserEntity } from 'entities'
+import { ChannelEntity, SuggestionEntity, TitleEntity, UserEntity } from 'entities'
 import { DbType } from '@/types';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
@@ -16,7 +16,7 @@ export const dbOptions: DataSourceOptions = {
   database: DB_DATABASE,
   logging: false,
   synchronize: true,
-  entities: [UserEntity, ChannelEntity, TitleEntity],
+  entities: [UserEntity, ChannelEntity, TitleEntity, SuggestionEntity],
   entitySkipConstructor: true,
   namingStrategy: new SnakeNamingStrategy(),
   };
