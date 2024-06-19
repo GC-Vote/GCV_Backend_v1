@@ -33,10 +33,24 @@ channelRouter.get(
 );
 
 channelRouter.get(
-  "/:userId",
-  ClerkExpressRequireAuth(),
+  "/user_id/:userId",
+  // ClerkExpressRequireAuth(),
   channelController.getChannelByUserValidator(),
   channelController.getChannelByUser
+);
+
+channelRouter.get(
+  "/channelName/:channelName",
+  // ClerkExpressRequireAuth(),
+  channelController.getChannelByNameValidator(),
+  channelController.getChannelByName
+);
+
+channelRouter.get(
+  "/all",
+  // ClerkExpressRequireAuth(),
+  channelController.getAllChannelValidator(),
+  channelController.getChannel
 );
 
 export default channelRouter;

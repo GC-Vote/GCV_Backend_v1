@@ -35,7 +35,7 @@ export const createSuggestion = async (
   );
   const titleEntity: TitleEntity | null = await titleRepository.findOne({
     where: { titleName: data.title },
-    relations: ["channels"],
+    relations: ["channel"],
   });
   if (!userEntity) {
     throw new NotFoundError(MESSAGES.ERROR.USER_DOES_NOT_EXIST);
@@ -93,7 +93,7 @@ export const getSuggestionByTitleName = async (
   const suggestionRepository = await getSuggestionRepository();
   const suggestions = await suggestionRepository
     .createQueryBuilder("suggestions")
-    .innerJoinAndSelect(
+    .innerJoin(
       "suggestions.title",
       "title",
       "title.titleName = :titleName",
@@ -101,6 +101,7 @@ export const getSuggestionByTitleName = async (
         titleName,
       }
     )
+    .leftJoinAndSelect("suggestions.user", "user")
     .getMany();
   return suggestions;
 };

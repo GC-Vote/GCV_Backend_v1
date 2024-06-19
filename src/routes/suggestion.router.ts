@@ -13,14 +13,14 @@ suggestionRouter.post(
 
 suggestionRouter.get(
     "/:userId",
-    ClerkExpressRequireAuth(),
+    // ClerkExpressRequireAuth(),
     suggestionController.getSuggestionByUserValidator(),
     suggestionController.getSuggestionByUser
 );
 
 suggestionRouter.get(
     "/titleName/:titleName",
-    ClerkExpressRequireAuth(),
+    // ClerkExpressRequireAuth(),
     suggestionController.getSuggestionByTitleValidator(),
     suggestionController.getSuggestionByTitle
 );

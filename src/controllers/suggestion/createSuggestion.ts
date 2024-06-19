@@ -17,6 +17,9 @@ export const suggestionCreateValidator = () => {
     body("title")
       .notEmpty()
       .withMessage(MESSAGES.VALIDATION.TITLE_IS_REQUIRED),
+    body("solution")
+      .notEmpty()
+      .withMessage(MESSAGES.VALIDATION.SOLUTION_IS_REQUIRED),
     body("description")
       .notEmpty()
       .withMessage(MESSAGES.VALIDATION.DESCRIPTION_IS_REQUIRED),

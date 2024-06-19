@@ -3,7 +3,7 @@ import cors from "cors";
 import express, { Express } from "express";
 import requestIp from "request-ip";
 import rateLimit from "express-rate-limit";
-import fileUpload from "express-fileupload"
+import fileUpload from "express-fileupload";
 
 import { ROUTE_VERSION } from "@/config";
 import { MESSAGES } from "@/consts";
@@ -31,7 +31,7 @@ const backendSetup = (app: Express) => {
       });
     },
   });
-  app.use(limiter);
+  // app.use(limiter);
   app.use(express.json());
   app.use(cors());
   app.use(bodyParserJSON());
@@ -46,15 +46,17 @@ const backendSetup = (app: Express) => {
     res.send("OK");
   });
 
-  app.use(fileUpload({
-    createParentPath: true,
-    abortOnLimit: true,
-    // limits: {fileSize: 1000*1024*1024},
-    useTempFiles: true, 
-    tempFileDir: '/tmp/',
-    safeFileNames: true,
-    preserveExtension: true
-  }));
+  app.use(
+    fileUpload({
+      createParentPath: true,
+      abortOnLimit: true,
+      // limits: {fileSize: 1000*1024*1024},
+      useTempFiles: true,
+      tempFileDir: "/tmp/",
+      safeFileNames: true,
+      preserveExtension: true,
+    })
+  );
 
   app.get("/protected-endpoint", ClerkExpressRequireAuth(), (req, res) => {
     const { auth } = req as any;
@@ -63,6 +65,7 @@ const backendSetup = (app: Express) => {
 
   app.use(`/api/${ROUTE_VERSION}`, appRoutes);
   app.use(errorHandlerMiddleware);
+  app.use(express.static("public"));
 
   app.listen(port, () => {
     console.info(`${MESSAGES.SERVER.SERVER_RUN_SUCCESS} on PORT:${port}`);

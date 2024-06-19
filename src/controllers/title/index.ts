@@ -6,3 +6,4 @@ export * from "./setTitleStatus";
 export * from "./increaseTitleVoteCount";
 export * from "./increaseTitleSuggestionCount";
 export * from "./changeTitlePermissioned";
+export * from "./getTitleByName";

@@ -27,21 +27,19 @@ export const fileLoadHandler = async (
   const name = uploadFile.name;
   const md5 = uploadFile.md5;
   // const saveAs = `${md5}_${name}`;
-  console.log(name)
-  const date = new Date(Date.now());
-  const saveAs = `${date.getFullYear()}${date.getMonth()}${date.getDate()}${date.getHours()}${date.getMinutes()}${
-    uploadFile.name
-  }`;
+  console.log(name);
+  // const date = new Date(Date.now());
+  // const saveAs = `${date.getFullYear()}${
+  //   date.getMonth() + 1
+  // }${date.getDate()}${date.getHours()}${date.getMinutes()}${uploadFile.name}`;
   // console.log(name);
   await uploadFile.mv(
-    `${path.join(__dirname, "../../../", "public/upload/img/")}${saveAs}`,
+    `${path.join(__dirname, "../../../", "public/upload/img/")}${name}`,
     function (err) {
       if (err) {
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
       }
-      return res
-        .status(httpStatus.OK)
-        .json({ status: "uploaded", name, saveAs });
+      return res.status(httpStatus.OK).json({ status: "uploaded", name });
     }
   );
 };
